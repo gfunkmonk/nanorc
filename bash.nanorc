@@ -1,24 +1,25 @@
 # Syntax highlighting/config dotfiles for GNU Nano
-# 2018 - 2024, Ivan Kmeťo
+# 2018 - 2024, Ivan Kmeto
 #
 # CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
 # https://creativecommons.org/publicdomain/zero/1.0/
 
 # Bash Shell Script File
-syntax "bash" "\.(bash|sh)$"
+#syntax "bash" "\.(bash|sh)$"
+syntax "bash" "\.bash$" "\.bashrc$" "bashrc$" "\.bash_(profile|aliases|functions|login|logout|extras|colors|prompts)$" "(\.|/)profile$"
+header "^#!.*/(ba|k|pdk)?sh[-0-9_]*"
 
-
-color sand                   "\<([0-9]+|0x[0-9a-fA-F]*)\>|'.'"
-color bold,rosy              "\<(if|else|for|function|case|esac|in|select|until|while|do|elif|then|set|\.|done|fi)\>"
-color bold,sky               "\<(source|alias|bg|bind|break|builtin|cd|command|compgen|complete|continue|dirs|disown|echo|enable|eval|exec|exit|fc|fg|getopts|hash|help|history|jobs|kill|let|logout|popd|printf|pushd|pwd|return|set|shift|shopt|suspend|test|times|trap|type|ulimit|umask|unalias|wait)\>"
+color ocher                   "\<([0-9]+|0x[0-9a-fA-F]*)\>|'.'"
+color bold,peach              "\<(if|else|for|function|case|esac|in|select|until|while|do|elif|then|set|\.|done|fi)\>"
+color bold,lagoon               "\<(source|alias|bg|bind|break|builtin|cd|command|compgen|complete|continue|dirs|disown|echo|enable|eval|exec|exit|fc|fg|getopts|hash|help|history|jobs|kill|let|logout|popd|printf|pushd|pwd|return|set|shift|shopt|suspend|test|times|trap|type|ulimit|umask|unalias|wait)\>"
 color bold,lightwhite        start="[$@%]" end="([[:alnum:]]|_)*"
-color italic,mauve           ""(\\.|[^"])*"|<[A-Za-z_./-]+>"
+color italic,pink           ""(\\.|[^"])*"|<[A-Za-z_./-]+>"
 
 # Comments
 color italic,slate           "#.*$"
 color italic,black,crimson   "(TODO|FIXME|BUG):?"
 color italic,black,lime      "NOTE:?"
-color italic,black,rosy      "CIV:?"
+color italic,black,tawny      "CIV:?"
 
 # Show trailing whitespace
 color ,green                 "[[:space:]]+$"
