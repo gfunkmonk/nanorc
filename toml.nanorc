@@ -1,15 +1,12 @@
 syntax "toml" "\.toml$"
 comment "#"
 
-# Booleans
-color magenta "true|false"
-
 # Numbers
-color green "[+-]?[[:space:]]*[0-9]+(\.[0-9]+)?([Ee][+-]?[0-9]+)?"
-color green "[0-9]+(_[0-9]+)*"
+color orange "[+-]?[[:space:]]*[0-9]+(\.[0-9]+)?([Ee][+-]?[0-9]+)?"
+color orange "[0-9]+(_[0-9]+)*"
 
 # Tables / unwrapped keys
-color brightgreen "[a-zA-Z0-9_]*(\.[a-zA-Z0-9_]+)*"
+color pink "[a-zA-Z0-9_]*(\.[a-zA-Z0-9_]+)*"
 
 # Invalid Table names
 color ,red "^[[:space:]]*\[\]"
@@ -18,12 +15,15 @@ color ,red "^[[:space:]]*\[.*\.\..*\]"
 color ,red "^[[:space:]]*\[\..*?\]"
 
 # Strings
-color brightyellow ""(\.|[^"])*"" "'(\.|[^'])*'"
-color yellow start="\"\"\"" end="\"\"\""
+color sky ""(\.|[^"])*"" "'(\.|[^'])*'"
+color slate start="\"\"\"" end="\"\"\""
+
+# Booleans
+color lightyellow "true|false"
 
 # Comments
-color brightblue "#.*"
-color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
+color plum "#.*"
+color brightwhite,beet "\<(FIXME|TODO|XXX)\>"
 
 # Keyless value
 color ,red "^[[:space:]]*=.*"
