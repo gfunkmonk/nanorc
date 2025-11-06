@@ -1,4 +1,4 @@
-syntax "configfiles" "(\.|/)conf$" "(\.|/)ample$" "(\.|/)globals$" "xfce.*$" "syslog-ng" "sudoers"
+syntax "configfiles" "(\.|/)ample$" "(\.|/)globals$" "xfce.*$" "syslog-ng" "sudoers"
 color brightwhite "\<(alias)\>"
 color blue "<(\\.|[^'])*>"
 color magenta "[a-zA-Z0-9\_]+="
