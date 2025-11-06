@@ -6,10 +6,11 @@ magic "diff output"
 # You can't add comments in patch files.
 comment ""
 
-color brightgreen "^\+.*"
-color green "^\+\+\+.*"
-color brightblue "^ .*"
-color brightred "^-.*"
+color mint "^\+.*"
+color teal "^\+\+\+.*"
+color lagoon "^ .*"
+color peach "^-.*"
 color red "^---.*"
 color brightyellow "^@@.*"
-color magenta "^diff.*"
+color purple "^diff.*"
+
