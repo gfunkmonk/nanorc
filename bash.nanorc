@@ -6,7 +6,7 @@
 
 # Bash Shell Script File
 #syntax "bash" "\.(bash|sh)$"
-syntax "bash" "\.bash$" "\.bashrc$" "bashrc$" "\.bash_(profile|aliases|functions|login|logout|extras|colors|prompts)$" "(\.|/)profile$"
+syntax "bash" "\.bash$" "\.bashrc$" "bashrc$" "\.bash_(profile|aliases|functions|login|logout|extras|colors|prompts)$" "\.bash_.*" "(\.|/)profile$"
 header "^#!.*/(ba|k|pdk)?sh[-0-9_]*"
 
 color ocher                   "\<([0-9]+|0x[0-9a-fA-F]*)\>|'.'"
