@@ -6,9 +6,9 @@ syntax "batch" "\.(bat|cmd)$"
 header "^@[eE](cho|CHO) (on|off|ON|OFF)"
 comment "REM "
 
-color bold,mint              "\<(assoc|break|call|cd|chdir|chcp|cls|color|copy|date|del|else|erase|dir|echo|endlocal|erase|errorlevel|exit|for|ftype|goto|if|md|mkdir|mklink|move|path|pause>
+color bold,mint              "\<(assoc|break|call|cd|chdir|chcp|cls|color|copy|date|del|else|erase|dir|echo|endlocal|erase|errorlevel|exit|for|ftype|goto|if|md|mkdir|mklink|move|path|pause|popd|prompt|pushd|rd|rmdir|rem|ren|rename|set|setlocal|shift|start|time|title|type|ver|verify|vol|in|defined|do|exist|gtr|not)\>"
 
-color bold,lagoon            "\<(append|arp|at|attrib|autofail|backup|bcdboot|bcdedit|cacls|certreq|certutil|change|chkdsk|chkntfs|choice|cipher|cleanmgr|clip|cmd|cmdkey|comp|compact|conve>
+color bold,lagoon            "\<(append|arp|at|attrib|autofail|backup|bcdboot|bcdedit|cacls|certreq|certutil|change|chkdsk|chkntfs|choice|cipher|cleanmgr|clip|cmd|cmdkey|comp|compact|convert|csvde|debug|defrag|deltree|devcon|dirquota|diskcomp|diskcopy|diskpart|diskshadow|dnscmd|doskey|driverquery|dsacls|dsadd|dsget|dsquery|dsmod|dsmove|dsrm|dsmgmt|eventcreate|expand|explorer|extract|fc|find|findstr|forfiles|format|freedisk|fsutil|ftp|getmac|gpresult|gpupdate|graftabl|help|icacls|iexpress|ipconfig|inuse|keyb|label|lodctr|logman|logoff|makecab|mode|more|mountvol|msg|msiexec|msinfo32|mstsc|net|netdom|netsh|nbstat|netstat|nslookup|ntbackup|ntdsutil|openfiles|pathping|ping|powercfg|print|prncnfg|query|recover|reg|regedit|regsvr32|replace|reset|restore|robocopy|route|runas|rundll32|sc|schtasks|setx|sfc|shutdown|sort|ssh|subst|systeminfo|takeown|taskkill|tasklist|telnet|timeout|tracert|tree|tskill|waitfor|where|whoami|winrm|wmic|wmic|xcacls|xcopy)\>"
 
 color sand                   "\<([0-9]+|0x[0-9a-fA-F]*)\>|'.'"
 color sand                   ":,*(#[0-9]+|#x[0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]*)\>"
