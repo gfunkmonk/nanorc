@@ -1,0 +1,11 @@
+syntax "passwd" "(\.|/)passwd$" "(\.|/)shadow$"
+color brightyellow ".*$"
+color brightwhite "\:.*$"
+color tawny "\:*\:"
+color lagoon "/.*$"
+color peach "/bin/false"
+color brightred "root"
+color mint "/bin/.*sh"
+color brightwhite "[0-9]"
+color plum "\:\/.*\:"
+

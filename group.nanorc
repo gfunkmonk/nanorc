@@ -1,0 +1,4 @@
+syntax "group" "group$"
+color green "[0-9]\:.*$"
+color brightwhite "[0-9]"
+icolor brightred "^[[:space:]]*[.0-9A-Z_]*:"
