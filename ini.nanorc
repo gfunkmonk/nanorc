@@ -1,12 +1,24 @@
-syntax "INI" "\.(ini|desktop|lfl|override|cfg|npmrc)$" "(mimeapps\.list|pinforc|setup\.cfg)$" "weechat/.+\.conf$"
-header "^\[[A-Za-z]+\]$"
+# Syntax highlighting/config dotfiles for GNU Nano
+# 2018 - 2023, Ivan Kmeto
+#
+# CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
+# https://creativecommons.org/publicdomain/zero/1.0/
 
-color brightcyan "\<(true|false)\>"
-color cyan "^[[:space:]]*[^=]*="
-color brightmagenta "^[[:space:]]*\[.*\]$"
-color red "[=;]"
-color yellow ""(\\.|[^"])*"|'(\\.|[^'])*'"
-color brightblue "(^|[[:space:]])(#([^{].*)?|;.*)$"
-color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
-color ,green "[[:space:]]+$"
-color ,red "	+ +| +	+"
+# Windows Initialization File
+syntax "ini" "\.ini$"
+
+
+color bold,sky               start="\[" end="\]"
+color sand                   "\<([0-9]+|0x[0-9a-fA-F]*)\>|'.'"
+color bold,lightwhite        "(#[0-9]+|#x[0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]*)="
+color brightcyan             "\<(true|false)\>"
+color red                    "[=;]"
+
+# Comments
+color italic,slate           "(^|[[:space:]]);([^{].*)?$"
+color italic,black,crimson   "(TODO|FIXME|BUG):?"
+color italic,black,lime      "NOTE:?"
+color italic,black,rosy      "CIV:?"
+
+# Show trailing whitespace
+color ,green                 "[[:space:]]+$"
