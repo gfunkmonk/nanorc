@@ -1,6 +1,6 @@
 syntax "crontab" "crontab*"
 color brightwhite "[0-9]"
-color bold,rosy "\*"
+color bold,#99f "\*"
 color bold,sky "[[:space:]]/.*$"
 color bold,lightmagenta "\"[^\"]*\""
 color bold,lightmagenta "'([^']*)'"
