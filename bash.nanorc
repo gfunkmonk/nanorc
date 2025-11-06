@@ -9,17 +9,21 @@
 syntax "bash" "\.bash$" "\.bashrc$" "bashrc$" "\.bash_(profile|aliases|functions|login|logout|extras|colors|prompts)$" "\.bash_.*" "(\.|/)profile$"
 header "^#!.*/(ba|k|pdk)?sh[-0-9_]*"
 
-color ocher                   "\<([0-9]+|0x[0-9a-fA-F]*)\>|'.'"
-color bold,peach              "\<(if|else|for|function|case|esac|in|select|until|while|do|elif|then|set|\.|done|fi)\>"
-color bold,lagoon               "\<(source|alias|bg|bind|break|builtin|cd|command|compgen|complete|continue|dirs|disown|echo|enable|eval|exec|exit|fc|fg|getopts|hash|help|history|jobs|kill|let|logout|popd|printf|pushd|pwd|return|set|shift|shopt|suspend|test|times|trap|type|ulimit|umask|unalias|wait)\>"
+color italic,mint            "\<([0-9]+|0x[0-9a-fA-F]*)\>|'.'"
+color bold,rosy              "\<(if|else|for|function|case|esac|in|select|until|while|do|elif|then|set|\.|done|fi|local|read|shift)\>"
+color bold,lagoon            "\<(source|alias|bg|bind|break|builtin|command|compgen|complete|continue|dirs|disown|enable|eval|exec|exit|fc|fg|getopts|hash|help|history|jobs|kill|logout|popd|printf|pushd|pwd|return|set|shift|shopt|suspend|test|time|times|trap|type|ulimit|unset|umask|unalias|wait)\>"
 color bold,lightwhite        start="[$@%]" end="([[:alnum:]]|_)*"
-color italic,pink           ""(\\.|[^"])*"|<[A-Za-z_./-]+>"
+color bold,lime              "\<(aclocal|autoconf|autoheader|automake|awk|bc|bison|cat|cd|chmod|chown|clear|cp|cut|echo|env|export|gawk|gmake|grep|head|install|let|ln|locate|man|make|mkdir|mknod|nawk|nc|nice|printf|mv|rm|sed|set|strip|sudo|tail|tar|tee|test|touch|uniq|wget|whatis|whereis|which|who|whoami|xargs|yes|zip)\>"
+#color italic,mauve          ""(\\.|[^"])*"|<[A-Za-z_./-]+>"
+color bold,peach             ""(\\.|[^"])*""
+color bold,mauve             "\$\{?[0-9A-Z_!@#$*?-]+\}?"
+color bold,peach             "'(\\.|[^'])*'"
 
 # Comments
 color italic,slate           "#.*$"
 color italic,black,crimson   "(TODO|FIXME|BUG):?"
-color italic,black,lime      "NOTE:?"
-color italic,black,tawny      "CIV:?"
+color italic,black,orange    "NOTE:?"
+color italic,black,pink      "CIV:?"
 
 # Show trailing whitespace
 color ,green                 "[[:space:]]+$"
