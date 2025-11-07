@@ -1,0 +1,5 @@
+syntax "desktop" "\.desktop$"
+color brightblue "\[(\\.|[^\"])*\]"
+color yellow "=.*$"
+color brightgreen "\="
+

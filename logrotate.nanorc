@@ -1,0 +1,7 @@
+syntax "logrotate" "logrotate.conf$"
+color brightwhite "[0-9]"
+color bold,purple start="/" end="[[:space:]]"
+color bold,cyan "(create|compress|include|notifempty|nomail|noolddir|\{|\})"
+color brightyellow "(weekly|daily|rotate|postrotate|sharedscripts)"
+color brightmagenta "logrotate"
+color italic,ocher "#.*$"

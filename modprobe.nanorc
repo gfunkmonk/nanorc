@@ -1,0 +1,8 @@
+syntax "modprobe" "^/etc/modprobe.conf$" "^/etc/modprobe\.d/[^/]+\.conf$" "^^/usr/lib/modprobe\.d/[^/]+\.conf$"
+color brightwhite "=[0-9]"
+color rosy "[a-zA-Z0-9\_]+="
+color orange "alias"
+color mauve "options"
+color bold,crimson "blacklist"
+color sand "="
+color italic,lime "#.*$"

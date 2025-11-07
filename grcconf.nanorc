@@ -1,0 +1,4 @@
+syntax "grcconf" "^/etc/grc.conf$"
+color #fd4 "conf\..*$"
+color #d6a "\(.*$|\\.*$"
+color italic,#6a6 "#.*$"

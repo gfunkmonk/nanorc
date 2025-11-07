@@ -1,0 +1,6 @@
+syntax "dircolors" "DIR_COLORS$" "\.dircolors$"
+color #78f "\<(TERM|NORMAL|FILE|DIR|LINK|FIFO|SOCK|DOOR|BLK|CHR|ORPHAN|MISSING|SETUID|SETGID|MULTIHARDLINK|CAPABILITY)\>"
+color #78f "\<(STICKY|EXEC|STICKY_OTHER_WRITABLE|OTHER_WRITABLE|RESET)\>"
+color bold,#9f0 "[0-9][0-9]\;.*$"
+color #2f7 "\.[.0-9A-Z_]*[[:space:]]"
+color italic,#24e "#.*$"

@@ -13,6 +13,22 @@ icolor bold,brightred "(^|[[:space:]])((\[|\()[0-9a-z_!@#$%^&*-]+(\]|\)))"
 # Numbers
 icolor bold,green "[[:space:]][0-9]+[0-9.]*[KMGT]*"
 
+# Special Values:
+icolor bold,green "(^|\s|=)(default|true|false|on|off|yes|no)(\s|$)"
+
+# equals
+color bold,peach "\="
+
+# URLs:
+icolor bold,lime "\b(([A-Z]+://|www[.])[A-Z0-9/:#?&$=_\.\-]+)(\b|$| )"
+
+# Section Headings:
+color bold,lagoon "^\s*((Sub)?Section\s*(=|\>)|End(Sub)?Section\s*$)"
+color bold,lagoon "^\s*\$(end)?if(\s|$)"
+
 # Comments
 color italic,brightcyan start="(^|[[:space:]])(#|;).*$" end="$"
 color #23e "(^|[[:space:]])(#|;)"
+color #23e "^\s*##.*$"
+color italic,#ff1 start="<!--" end="-->"
+

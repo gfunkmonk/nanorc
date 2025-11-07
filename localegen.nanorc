@@ -1,0 +1,5 @@
+syntax "localegen" "^/etc/locale(.gen|s.build)"
+color bold,cyan "[a-zA-Z0-9\_]*.ISO.*$"
+color bold,yellow "[a-zA-Z0-9\_]*.UTF.*$"
+color italic,green "#.*$"
+

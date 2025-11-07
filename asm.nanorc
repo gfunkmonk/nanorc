@@ -4,18 +4,77 @@ syntax "ASM" "\.(S|s|asm)$"
 magic "assembler source"
 comment "//"
 
+#color red "\<[A-Z_]{2,}\>"
+#color brightgreen "\.(data|subsection|text)"
+#color green "\.(align|file|globl|global|hidden|section|size|type|weak)"
+#color brightyellow "\.(ascii|asciz|byte|double|float|hword|int|long|short|single|struct|word)"
+#icolor brightred "^[[:space:]]*[.0-9A-Z_]*:"
+#color brightcyan "^[[:space:]]*#[[:space:]]*(define|undef|include|ifn?def|endif|elif|else|if|warning|error)"
+### Highlight strings (note: VERY resource intensive)
+#color brightyellow "<[^= 	]*>" ""(\\.|[^"])*""
+#color brightyellow start=""(\\.|[^"])*\\[[:space:]]*$" end="^(\\.|[^"])*""
+### Highlight comments
+#color brightblue "^\s*//.*"
+#color brightblue start="/\*" end="\*/"
+#color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
+### Highlight trailing whitespace
+#color ,green "[[:space:]]+$"
+
+# Numbers
+## Decimal
+color brightyellow "[0-9]+(\.[0-9]+)?"
+
+## Reset words so number hightlighting doesn't happen in the middle of a variable name
+color white "[A-Za-z_][A-Za-z0-9_]*"
+
+# Instructions
+color brightwhite "^[[:space:]]*[A-Za-z][A-Za-z0-9]+"
+
+## Hex
+color brightyellow "0x[0-9A-Fa-f]+"
+
+# Uppercase Words
 color red "\<[A-Z_]{2,}\>"
-color brightgreen "\.(data|subsection|text)"
-color green "\.(align|file|globl|global|hidden|section|size|type|weak)"
+
+# Data
+color brightgreen "\.(data|subsection|text|rodata|string)"
+
+# Compiler Extras
+color green "\.(align|file|globl|global|hidden|section|size|type|weak|zero|local|loc)"
+
+# Data
 color brightyellow "\.(ascii|asciz|byte|double|float|hword|int|long|short|single|struct|word)"
+
+# Function Calls
+color brightcyan "^[[:space:]]*(call)"
+
+# Returns
+color brightmagenta "^[[:space:]]*(ret)"
+
+# Jumps
+color brightmagenta "^[[:space:]]*j(mp|e|ne|ns|g|l|ge|le|b|a)"
+
+# Labels
 icolor brightred "^[[:space:]]*[.0-9A-Z_]*:"
+
+# Registers
+color cyan "%[a-z0-9]+"
+
+# Special Characters
+color brightblack "(\.|:|,)"
+color brightred "[-%@\$]"
+
+# Directives
 color brightcyan "^[[:space:]]*#[[:space:]]*(define|undef|include|ifn?def|endif|elif|else|if|warning|error)"
-## Highlight strings (note: VERY resource intensive)
+
+# Strings
 color brightyellow "<[^= 	]*>" ""(\\.|[^"])*""
 color brightyellow start=""(\\.|[^"])*\\[[:space:]]*$" end="^(\\.|[^"])*""
-## Highlight comments
+
+# Comments
 color brightblue "^\s*//.*"
 color brightblue start="/\*" end="\*/"
-color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
-## Highlight trailing whitespace
+
+# Trailing Whitespace
 color ,green "[[:space:]]+$"
+

@@ -13,4 +13,4 @@ icolor bold,mint "^[0-9a-f:]+\s"
 color lime "[.:]"
 
 # comments
-color bold,brightblack "^#.*"
+color italic,brightblue "^#.*"
