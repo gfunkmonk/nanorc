@@ -4,7 +4,7 @@ color brightcyan "\<(true|false)\>"
 color cyan "^[[:space:]]*[^=]*="
 color brightmagenta "^[[:space:]]*\[.*\]$"
 color yellow ""(\\.|[^"])*"|'(\\.|[^'])*'"
-color brightblack "(^|[[:space:]])#([^{].*)?$"
+color brightwhite "(^|[[:space:]])#([^{].*)?$"
 color ,green "[[:space:]]+$"
 color ,red "^ +"
 
@@ -19,14 +19,14 @@ color ,red "^ +"
 syntax "git-commit" "COMMIT_EDITMSG|TAG_EDITMSG"
 
 # Commit message
-color yellow ".*"
+color lime ".*"
 
 # Comments
-color brightblack "^#.*"
+color sand "^#.*"
 
 # Files changes
 color white       "#[[:space:]](deleted|modified|new file|renamed):[[:space:]].*"
-color red         "#[[:space:]]deleted:"
+color white,brightred         "#[[:space:]]deleted:"
 color green       "#[[:space:]]modified:"
 color brightgreen "#[[:space:]]new file:"
 color brightblue  "#[[:space:]]renamed:"
@@ -35,15 +35,15 @@ color brightblue  "#[[:space:]]renamed:"
 color black "^#	[^/?*:;{}\\]+\.[^/?*:;{}\\]+$"
 
 color brightmagenta "^#[[:space:]]Changes.*[:]"
-color brightred "^#[[:space:]]Your branch and '[^']+"
-color brightblack "^#[[:space:]]Your branch and '"
-color brightwhite "^#[[:space:]]On branch [^ ]+"
-color brightblack "^#[[:space:]]On branch"
+color brightred,black "^#[[:space:]]Your branch and '[^']+"
+color yellow "^#[[:space:]]Your branch and '"
+color brightblue "^#[[:space:]]On branch [^ ]+"
+color brightblue "^#[[:space:]]On branch"
 
 # Recolor hash symbols
 
 # Recolor hash symbols
-color brightblack "#"
+color boysen "#"
 
 # Trailing spaces (+LINT is not ok, git uses tabs)
 color ,green "[[:space:]]+$"
@@ -53,10 +53,10 @@ color ,green "[[:space:]]+$"
 syntax "git-rebase-todo" "git-rebase-todo$"
 
 # Default
-color yellow ".*"
+color volt ".*"
 
 # Comments
-color brightblack "^#.*"
+color azure "^#.*"
 
 # Rebase commands
 color green       "^(e|edit) [0-9a-f]{7,40}"
@@ -73,7 +73,7 @@ color yellow      "^(x|exec) [^ ]+ [0-9a-f]{7,40}"
 color yellow      "^#  (x, exec)"
 
 # Recolor hash symbols
-color brightblack "#"
+color citron "#"
 
 # Commit IDs
 color brightblue "[0-9a-f]{7,40}"

@@ -78,3 +78,9 @@ color brightblue start="/\*" end="\*/"
 # Trailing Whitespace
 color ,green "[[:space:]]+$"
 
+# Data types (Intel) and other
+color cyan "dw|db|dd|equ"
+
+# For AT&T syntax
+color brightgreen "\$"
+color brightgreen "%"

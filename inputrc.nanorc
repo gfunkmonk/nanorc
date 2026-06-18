@@ -1,11 +1,29 @@
 syntax "Inputrc" "inputrc$"
 
-color red   "\<(off|none)\>"
-color green "\<on\>"
-color brightblue   "\<set|\$include\>"
-color yellow ""(\\.|[^"])*"|'(\\.|[^'])*'"
-color magenta     "\\.?"
-color brightblack "(^|[[:space:]])#([^{].*)?$"
-color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
-color ,green "[[:space:]]+$"
-color ,red "	+ +| +	+"
+icolor red   "\s(off|none)(\s|$)"
+icolor green "\s(on|1)(\s|$)"
+
+## keyword
+color blue         "^\s*\$if +(mode|term)=\<"
+color brightblue   "^\s*\$if +version *(=?=|!=|>=|>|<=|<) *[[:digit:]]+(\.[[:digit:]]+)?\s*$"
+color blue         "^\s*\$if +version *(=?=|!=|>=|>|<=|<)"
+icolor blue        "^\s*\$if +[a-z-]+ +(=?=|!=)"
+color brightblue   "^\s*(set|\$include|\$if|\$endif|\$else)(\s|$)"
+
+## variable
+icolor cyan "[[:blank:]]bell-style|bind-tty-special-chars|blink-matching-paren|colored-completion-prefix|colored-stats|comment-begin|completion-display-width|completion-ignore-case|completion-map-case|completion-prefix-display-length|completion-query-items|convert-meta|disable-completion|echo-control-characters|editing-mode|emacs-mode-string|enable-bracketed-paste|enable-keypad|enable-meta-key|expand-tilde|history-preserve-point|history-size|horizontal-scroll-mode|input-meta|isearch-terminators|keymap|keyseq-timeout|mark-directories|mark-modified-lines|mark-symlinked-directories|match-hidden-files|meta-flag|menu-complete-display-prefix|output-meta|page-completions|print-completions-horizontally|revert-all-at-newline|show-all-if-ambiguous|show-all-if-unmodified|show-mode-in-prompt|skip-completed-text|vi-cmd-mode-string|vi-ins-mode-string|visible-stats([[:blank:]]|$)"
+
+## function
+color brightcyan "[[:blank:]]abort|accept-line|alias-expand-line|arrow-key-prefix|backward-byte|backward-char|backward-delete-char|backward-kill-line|backward-kill-word|backward-word|beginning-of-history|beginning-of-line|bracketed-paste-begin|call-last-kbd-macro|capitalize-word|character-search|character-search-backward|clear-display|clear-screen|complete|complete-command|complete-filename|complete-hostname|complete-into-braces|complete-username|complete-variable|copy-backward-word|copy-forward-word|copy-region-as-kill|dabbrev-expand|delete-char|delete-char-or-list|delete-horizontal-space|digit-argument|display-shell-version|do-lowercase-version|downcase-word|dump-functions|dump-macros|dump-variables|dynamic-complete-history|edit-and-execute-command|emacs-editing-mode|end-kbd-macro|end-of-history|end-of-line|exchange-point-and-mark|forward-backward-delete-char|forward-byte|forward-char|forward-search-history|forward-word|glob-complete-word|glob-expand-word|glob-list-expansions|history-and-alias-expand-line|history-expand-line|history-search-backward|history-search-forward|history-substring-search-backward|history-substring-search-forward|insert-comment|insert-completions|insert-last-argument|kill-line|kill-region|kill-whole-line|kill-word|magic-space|menu-complete|menu-complete-backward|next-history|next-screen-line|non-incremental-forward-search-history|non-incremental-forward-search-history-again|non-incremental-reverse-search-history|non-incremental-reverse-search-history-again|old-menu-complete|operate-and-get-next|overwrite-mode|paste-from-clipboard|possible-command-completions|possible-completions|possible-filename-completions|possible-hostname-completions|possible-username-completions|possible-variable-completions|previous-history|previous-screen-line|print-last-kbd-macro|quoted-insert|re-read-init-file|redraw-current-line|reverse-search-history|revert-line|self-insert|set-mark|shell-backward-kill-word|shell-backward-word|shell-expand-line|shell-forward-word|shell-kill-word|shell-transpose-words|skip-csi-sequence|start-kbd-macro|tab-insert|tilde-expand|transpose-chars|transpose-words|tty-status|undo|universal-argument|unix-filename-rubout|unix-line-discard|unix-word-rubout|upcase-word|vi-append-eol|vi-append-mode|vi-arg-digit|vi-bWord|vi-back-to-indent|vi-backward-bigword|vi-backward-word|vi-bword|vi-change-case|vi-change-char|vi-change-to|vi-char-search|vi-column|vi-complete|vi-delete|vi-delete-to|vi-eWord|vi-editing-mode|vi-end-bigword|vi-end-word|vi-eof-maybe|vi-eword|vi-fWord|vi-fetch-history|vi-first-print|vi-forward-bigword|vi-forward-word|vi-fword|vi-goto-mark|vi-insert-beg|vi-insertion-mode|vi-match|vi-movement-mode|vi-next-word|vi-overstrike|vi-overstrike-delete|vi-prev-word|vi-put|vi-redo|vi-replace|vi-rubout|vi-search|vi-search-again|vi-set-mark|vi-subst|vi-tilde-expand|vi-unix-word-rubout|vi-yank-arg|vi-yank-pop|vi-yank-to|yank|yank-last-arg|yank-nth-arg|yank-pop([[:blank:]]|$)"
+
+## string
+color yellow  ""(\\.|[^"\\])*"|'(\\.|[^'\\])*'"
+color red     "\\"
+color magenta "\\(C-|M-|e|\\|"|'|a|b|d|f|n|r|t|v|[0-7]{1,3}|x[[:xdigit:]]{1,2})"
+
+## comment
+color brightblack "(^|[[:blank:]])#.*$"
+
+## suffix spaces
+color ,green "[[:blank:]]+$"
+#color ,red "	+ +| +	+"

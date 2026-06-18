@@ -1,43 +1,160 @@
-## Syntax highlighting for ZSH scripts (initially copied from sh.nanorc)
-syntax "ZSH" "\.zsh$" "\.?(zshenv|zprofile|zshrc|zlogin|zlogout|zsh-theme)$"
-header "^#!.*/(env +)?zsh( |$)"
+# Original file: https://github.com/scopatz/nanorc/blob/master/zsh.nanorc
 
-## Numbers
-color brightyellow "\b[0-9]+\b"
+syntax zsh "(\.zsh|(^|/)\.?(zsh(env|rc)?|zprofile|zlogin|zlogout|zsh-theme)|\.zsh-theme)$"
+# Shebang
+header "^#!.*/((env[[:blank:]]+)?zsh)([[:blank:]]|$)"
+header "-\*-.*shell-script.*-\*-"
+# Final fallback if syntax and header checks fail.
+magic "Z shell script.*text"
+comment "#"
 
-## Conditionals and control flow
-color green "\<(always|break|bye|case|continue|disown|do|done|elif|else|esac|exit|fi|for|function|if|in|local|read|return|select|shift|then|time|until|while)\>"
+tabgives "    "
+linter zsh -n
 
-color green "(\{|\}|\(|\)|\;|\]|\[|`|\\|\$|<|>|!|=|&|\|)"
-## Conditional flags
-color green "-[Ldefgruwx]\>"
-color green "-(eq|ne|gt|lt|ge|le|s|n|z)\>"
+# Color settings
 
-## Bash-inherited
-color brightblue "\<((un)?alias|bindkey|builtin|cd|command|declare|eval|exec|export|jobs|let|popd|pushd|set|source|typeset|umask|unset)\>"
-## ZSH-specific
-color brightblue "\<(add-zsh-hook|autoload|cdr|chdir|compinit|dirs|(dis|en)able|echotc|echoti|emulate|print|printf|prompt(init)?|(un)?setopt|zle|zmodload|zstyle|whence|zargs|zmv)\>"
+# Dark Modern inherits token colors from Dark+.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L1-L5
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L1-L5
 
-## Common linux commands
-color brightmagenta "\<((g|ig)?awk|find|diff|\w{0,4}grep|kill|killall|\w{0,4}less|make|pkill|sed|sudo|tar)\>"
+# Match command words at the beginning of a simple command as a fallback.
+# VS Code Dark+ entity.name.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+icolor #dda "^[[:alpha:]_][[:alnum:]_:+-]*\>"
 
-## Coreutils commands
-color brightmagenta "\<(base(32|64)|basename|cat|chcon|chgrp|chmod|chown|chroot|cksum|comm|cp|csplit|cut|date|dd|df|dir|dircolors|dirname|du|echo|env|expand|expr|factor|false|fmt|fold|head|hostid|id|install|join|link|ln|logname|ls|md5sum|mkdir|mkfifo|mknod|mktemp|mv|nice|nl|nohup|nproc|numfmt|od|paste|pathchk|pinky|pr|printenv|ptx|pwd|readlink|realpath|rm|rmdir|runcon|seq|(sha1|sha224|sha256|sha384|sha512)sum|shred|shuf|sleep|sort|split|stat|stdbuf|stty|sum|sync|tac|tail|tee|test|timeout|touch|tr|true|truncate|tsort|tty|uname|unexpand|uniq|unlink|users|vdir|wc|who|whoami|yes)\>"
+# Match zsh control-flow words that VS Code scopes as keyword.control.
+# VS Code Dark+ keyword.control (#C586C0).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L75-L87
+color #c8c "\<(always|break|case|continue|coproc|do|done|elif|else|end|esac|fi|for|foreach|if|in|repeat|return|select|then|time|until|while)\>"
 
-## Function definition
-icolor brightgreen "^\s+(function\s+)[0-9A-Z_]+\s+\(\)"
+# Match zsh precommand modifiers.
+# VS Code Dark+ keyword.control (#C586C0).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L75-L87
+color #c8c "\<(noglob|nocorrect)\>"
 
-## Variables
-icolor brightred "\$\{?[0-9A-Z_!@#%$*?-]+\}?"
+# Match shell punctuation and operators that should stay at editor foreground color.
+# VS Code Dark Modern editor.foreground (#CCCCCC).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "(\;|\]|\[|`|\\|<|>|!|=|&|\|)"
 
-## Strings
-color yellow ""(\\.|[^"])*""
-color yellow "'(\\.|[^'])*'"
+# Match logical negation as a shell control operator.
+# VS Code Dark+ keyword.operator/control-like token (#C586C0).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L75-L87
+color #c8c "!"
 
-## Comments
-color cyan "(^|[[:space:]])#.*$"
-color brightcyan "(^|[[:space:]])##.*$"
-color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
+# Match plain shell words used as command arguments.
+# VS Code Dark VS string-like shell words (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+icolor #c97 "\<[[:lower:]_][[:lower:]_+-]*\>"
 
-## Trailing spaces
-color ,green "[[:space:]]+$"
+# Match unquoted path-like arguments.
+# VS Code Dark VS string (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 "(^|[[:space:]]|=)(~|/|\./)[^[:space:];|&]+"
+
+# Match short zsh options used as command arguments.
+# VS Code Dark+ constant.other.option (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L177-L184
+color #59d "(^|[[:space:]])-[a-zA-Z]+\>"
+
+# Match zsh test expression operators such as -r, -d, and -nt.
+# VS Code keeps shell test operators close to editor foreground.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "(^|[[:space:]])-(nt|ot|ef|eq|ne|lt|le|gt|ge|[abcdefhknoprstuwxzOGLSN])\>"
+
+# Match zsh declaration and modifier words that VS Code scopes as storage.
+# VS Code Dark VS storage/storage.modifier (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L245-L264
+color #59d "\<(declare|export|float|function|functions|integer|local|private|readonly|typeset)\>"
+
+## Command names.
+# Match zsh builtin command names that VS Code scopes as support.function.
+# VS Code Dark+ support.function/entity.name.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+color #dda "\<(alias|autoload|bg|bindkey|builtin|bye|cd|chdir|command|dirs|disable|disown|echo|echotc|echoti|emulate|enable|eval|exec|exit|false|fc|fg|getln|getopts|hash|history|jobs|kill|let|limit|log|logout|popd|print|printf|pushd|pwd|r|read|rehash|sched|set|setopt|shift|source|suspend|test|times|trap|true|ttyctl|type|ulimit|umask|unalias|unfunction|unhash|unlimit|unset|unsetopt|vared|wait|whence|where|which|zcompile|zformat|zftp|zle|zmodload|zparseopts|zprof|zpty|zregexparse|zsocket|zstyle|ztcp)\>"
+
+# Match bare variable/function names used as command arguments.
+# VS Code Dark VS string-like shell words (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+icolor #c97 "\<(__[[:alnum:]_:+-]+|_[[:alnum:]_]+|path|fpath)\>"
+
+# Match common zsh autoloadable function names as function calls.
+# VS Code Dark+ entity.name.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+color #dda "\<(add-zsh-hook|colors|compdef|compinit|prompt|promptinit|regexp-replace|zargs|zmv)\>"
+
+# Match private function calls at the beginning of simple commands.
+# VS Code Dark+ entity.name.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+icolor #dda "^[[:space:]]*_{1,2}[[:alnum:]:+-][[:alnum:]_:+-]*[[:space:]]"
+
+# Match common external command names as function calls.
+# VS Code Dark+ entity.name.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+color #dda "\<(awk|cat|chgrp|chmod|chown|cp|cut|date|diff|env|find|grep|head|install|ln|make|mkdir|mv|pkill|sed|sort|sudo|tail|tar|touch)\>"
+
+# Match function declarations written as name().
+# VS Code Dark+ entity.name.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+icolor #dda "\<[[:alpha:]_][[:alnum:]_:+-]*[[:space:]]*\(\)"
+
+# Recolor zsh options after command-name fallback rules.
+# VS Code Dark+ constant.other.option (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L177-L184
+color #59d "(^|[[:space:]])-[a-zA-Z]+\>"
+color #ccc "(^|[[:space:]])-(nt|ot|ef|eq|ne|lt|le|gt|ge|[abcdefhknoprstuwxzOGLSN])\>"
+
+# Recolor control-flow words after bare-word fallback rules.
+# VS Code Dark+ keyword.control (#C586C0).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L75-L87
+color #c8c "\<(always|break|case|continue|coproc|do|done|elif|else|end|esac|fi|for|foreach|if|in|repeat|return|select|then|time|until|while)\>"
+
+# Match grouping brackets and braces with VS Code's first bracket-pair color.
+# VS Code editorBracketHighlight.foreground1 (#FFD700).
+# ref: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/core/editorColorRegistry.ts#L78-L83
+color #fd0 "[][]" "[{}()]"
+
+# Match single-quoted and double-quoted zsh strings.
+# VS Code Dark VS string (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 ""(\\.|[^"])*"" "'(\\.|[^'])*'"
+
+# Match decimal numeric literals.
+# VS Code Dark VS constant.numeric (#B5CEA8).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L77-L85
+color #bca "\<[0-9]+\>"
+
+# Match special zsh variables such as $?, $$, $@, $^, and $~.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+icolor #9df "\$[-@*#?$!0-9_^~]"
+
+# Match simple zsh variable references such as $name.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+icolor #9df "\$[[:alpha:]_][[:alnum:]_]*"
+
+# Match braced zsh parameter expansions such as ${name}, ${(@f)name}, and ${path:h}.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+icolor #9df "\$\{[^}[:space:]]+\}"
+
+# Match the variable name part of zsh assignments such as name=value.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+icolor #9df "\<[[:alpha:]_][[:alnum:]_]*="
+
+# Recolor assignment operators after assignment-variable matching.
+# VS Code Dark Modern editor.foreground (#CCCCCC).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "="
+
+# Comment and shebang.
+# VS Code Dark VS comment (#6A9955).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L64-L68
+color #6a5 "(^|[[:space:]])#.*$"
+
+# Trailing whitespace.
+# VS Code Dark VS invalid (#F44747).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L130-L134
+color ,#f44 "[[:space:]]+$"

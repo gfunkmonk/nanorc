@@ -1,0 +1,30 @@
+syntax "Pascal" "\.pas$" "(\.pas$)|((^|/)(pas|p|imp)/[^/]*$)"
+
+## Declarations
+color yellow "\<var\>"
+
+## Function declarations
+color brightblue "\<(procedure|function)\>.*"
+color brightblue "\<(program)\>"
+
+## Control statements
+color magenta "\<(break|continue|do|else|end|for|if|then|repeat|while|until|begin)\>"
+
+## Types
+color blue "\<(boolean|byte|double|integer|longint|word|single|shortint|record|packed)\>"
+
+## Strings
+color yellow "[']([^']*[^\\])?[']" "[']{3}.*[^\\][']{3}"
+color yellow "["]([^"]*[^\\])?["]" "["]{3}.*[^\\]["]{3}"
+
+## Operators
+color brightcyan "(\*|\+|-|/|:=|=|<=|<>|<|>=|>)"
+color brightcyan "\<(and|or|not|xor|div|mod|shl|shr|)\>"
+
+## Constants
+color magenta "\<(true|false|null)\>"
+
+## Comments
+color green start="\{" end="\}"
+color green start="\(\*" end="\*\)"
+

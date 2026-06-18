@@ -1,16 +1,16 @@
 ## Make /etc/hosts nicer to read, see `man hosts 5` to see the format
 syntax "/etc/hosts" "^/etc/hosts$" "^\/etc\/hosts\.d\/.*\.hosts$"
 
-color bold,pink "^[[:space:]]*[.0-9A-Z_]*.*$"
+color bold,azure "^[[:space:]]*[.0-9A-Z_]*.*$"
 
 # IPv4
-color bold,lagoon "^[0-9\.]+\s"
+color bold,volt "^[0-9\.]+\s"
 
 # IPv6
-icolor bold,mint "^[0-9a-f:]+\s"
+icolor bold,piggy "^[0-9a-f:]+\s"
 
 # interpunction
-color lime "[.:]"
+color carrot "[.:]"
 
 # comments
-color italic,brightblue "^#.*"
+color italic,voodoo "^#.*"

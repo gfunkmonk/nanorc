@@ -4,14 +4,48 @@ syntax "Java" "\.java$"
 magic "Java "
 comment "//"
 
-color green "\<(boolean|byte|char|double|float|int|long|new|short|this|transient|void)\>"
-color red "\<(break|case|catch|continue|default|do|else|finally|for|if|return|switch|throw|try|while)\>"
-color cyan "\<(abstract|class|extends|final|implements|import|instanceof|interface|native|package|private|protected|public|static|strictfp|super|synchronized|throws|volatile)\>"
-color red ""[^"]*""
-color yellow "\<(true|false|null)\>"
-icolor yellow "\b(([1-9][0-9]+)|0+)\.[0-9]+\b" "\b[1-9][0-9]*\b" "\b0[0-7]*\b" "\b0x[1-9a-f][0-9a-f]*\b"
-color blue "//.*"
-color blue start="^\s*/\*" end="\*/"
+## Words
+color brightwhite "[a-z][A-Za-z0-9]*"
+
+## Function names
+color brightcyan "[A-Za-z0-9_]*[[:space:]]*\("
+
+## Class names
+color brightyellow "[[:space:]<(\.][A-Z][A-Za-z]+"
+
+## Operators
+color brightred "[+*|=!\%]" "<" ">" "/" "-" "&"
+color white "[.:?]"
+
+## Annotations
+color brightyellow "@[A-Za-z]+"
+
+## Puncuation
+color white "[,;]"
+
+## Parenthesis, brackets, curly brackets
+color white "[(){}]" "\[" "\]"
+
+## All uppercase phrases (constants)
+color italic,brightred "\<[A-Z_][0-9A-Z_]+\>"
+
+## Keywords
+color brightred "\<(boolean|byte|char|double|float|int|long)\>"
+color italic,brightmagenta "\<(new|short|this|transient|void|break|case|catch|continue|default|do|else|finally|for|if|return|switch|throw|try|while)\>"
+color brightmagenta "\<(abstract|class|extends|final|implements|import|instanceof|interface|native|package|private|protected|public|static|strictfp|super|synchronized|throws|volatile)\>"
+
+## Strings
+color brightgreen ""[^"]*""
+
+## true, false, null keywords
+color italic,brightblue "\<(true|false|null)\>"
+
+## Numbers
+icolor brightyellow "\b(([1-9][0-9]+)|0+)\.[0-9]+\b" "\b[1-9][0-9]*\b" "\b0[0-7]*\b" "\b0x[1-9a-f][0-9a-f]*\b"
+
+## Comments
+color brightblack "//.*"
+color brightblack start="^\s*/\*" end="\*/
 color brightblue start="/\*\*" end="\*/"
 color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
 

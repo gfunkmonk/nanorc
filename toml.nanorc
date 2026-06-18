@@ -1,36 +1,192 @@
 syntax "toml" "\.toml$"
 comment "#"
+tabgives "    "
 
-# Numbers
-color orange "[+-]?[[:space:]]*[0-9]+(\.[0-9]+)?([Ee][+-]?[0-9]+)?"
-color orange "[0-9]+(_[0-9]+)*"
+# TOML scopes below follow the grammar bundled by Even Better TOML.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L1-L24
 
-# Tables / unwrapped keys
-color pink "[a-zA-Z0-9_]*(\.[a-zA-Z0-9_]+)*"
-
-# Invalid Table names
-color ,red "^[[:space:]]*\[\]"
-color ,red "^[[:space:]]*\[[a-zA-Z0-9_]\.\]"
-color ,red "^[[:space:]]*\[.*\.\..*\]"
-color ,red "^[[:space:]]*\[\..*?\]"
-
-# Strings
-color sky ""(\.|[^"])*"" "'(\.|[^'])*'"
-color slate start="\"\"\"" end="\"\"\""
+# Dark Modern inherits token colors from Dark+.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L1-L5
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L1-L5
 
 # Booleans
-color lightyellow "true|false"
+# Even Better TOML scopes these as constant.language.boolean.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L219-L225
+# VS Code Dark VS constant.language (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L70-L74
+color #59d "\<(true|false)\>"
 
-# Comments
-color plum "#.*"
-color brightwhite,beet "\<(FIXME|TODO|XXX)\>"
+# Numbers
+# Even Better TOML scopes these as constant.numeric.*.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L227-L280
+# VS Code Dark VS constant.numeric (#B5CEA8).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L77-L85
+color #bca "\<[-+]?[0-9](_?[0-9])*([.][0-9](_?[0-9])*)?([eE][-+]?[0-9](_?[0-9])*)?\>"
+
+# Match hex, octal, and binary integer literals.
+# Even Better TOML scopes these as constant.numeric.*.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L259-L280
+# VS Code Dark VS constant.numeric (#B5CEA8).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L77-L85
+color #bca "\<0[xX][0-9A-Fa-f](_?[0-9A-Fa-f])*\>" "\<0[oO][0-7](_?[0-7])*\>" "\<0[bB][01](_?[01])*\>"
+
+# Match special float literals.
+# Even Better TOML scopes these as constant.numeric.inf/nan.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L243-L256
+# VS Code Dark VS constant.numeric (#B5CEA8).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L77-L85
+color #bca "\<[-+]?(inf|nan)\>"
+
+# Match dates and times.
+# Even Better TOML scopes these as constant.other.time.*.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L195-L217
+# VS Code Dark Modern editor.foreground (#CCCCCC).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "\<([0-9]{4}-[0-9]{2}-[0-9]{2})([Tt ][0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?(Z|[-+][0-9]{2}:[0-9]{2})?)?\>" "\<[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?\>"
+
+# Tables / unwrapped keys
+# Even Better TOML scopes these as support.type.property-name.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L132-L150
+# VS Code Dark VS support.type.property-name (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L313-L322
+color #9df "^[[:space:]]*[A-Za-z0-9_+-]+([[:space:]]*\.[[:space:]]*[A-Za-z0-9_+-]+)*[[:space:]]*="
+
+# Match quoted TOML keys before assignment.
+# Even Better TOML scopes these as support.type.property-name.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L132-L150
+# VS Code Dark VS support.type.property-name (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L313-L322
+color #9df "^[[:space:]]*(\"[^\"]+\"|'[^']+')([[:space:]]*\.[[:space:]]*(\"[^\"]+\"|'[^']+'))*[[:space:]]*="
+
+# Match bare TOML keys inside inline tables.
+# Even Better TOML reuses entryBegin inside inline tables.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L310-L338
+# VS Code Dark VS support.type.property-name (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L313-L322
+color #9df "[{,][[:space:]]*[A-Za-z0-9_+-]+([[:space:]]*\.[[:space:]]*[A-Za-z0-9_+-]+)*[[:space:]]*="
+
+# Match quoted TOML keys inside inline tables.
+# Even Better TOML reuses entryBegin inside inline tables.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L310-L338
+# VS Code Dark VS support.type.property-name (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L313-L322
+color #9df "[{,][[:space:]]*(\"[^\"]+\"|'[^']+')([[:space:]]*\.[[:space:]]*(\"[^\"]+\"|'[^']+'))*[[:space:]]*="
+
+# Match bare table and array-table names.
+# Even Better TOML scopes these as support.type.property-name.table/array.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L50-L99
+# VS Code Dark VS support.type.property-name (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L313-L322
+color #9df "^[[:space:]]*\[\[?[[:space:]]*[A-Za-z0-9_+-]+([[:space:]]*\.[[:space:]]*[A-Za-z0-9_+-]+)*[[:space:]]*\]\]?"
+
+# Match quoted table and array-table names.
+# Even Better TOML scopes these as support.type.property-name.table/array.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L50-L99
+# VS Code Dark VS support.type.property-name (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L313-L322
+color #9df "^[[:space:]]*\[\[?[[:space:]]*(\"[^\"]+\"|'[^']+')([[:space:]]*\.[[:space:]]*(\"[^\"]+\"|'[^']+'))*[[:space:]]*\]\]?"
+
+# Match table and array-table names that mix bare and quoted keys.
+# This covers pyproject.toml entry-point tables such as [project.entry-points."group"].
+# Even Better TOML scopes these as support.type.property-name.table/array.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L50-L99
+# VS Code Dark VS support.type.property-name (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L313-L322
+color #9df "^[[:space:]]*\[\[?[[:space:]]*([A-Za-z0-9_+-]+|\"[^\"]+\"|'[^']+')([[:space:]]*\.[[:space:]]*([A-Za-z0-9_+-]+|\"[^\"]+\"|'[^']+'))*[[:space:]]*\]\]?"
+
+# Recolor table and inline brackets with VS Code's first bracket-pair color.
+# This stays in this section because nano applies later color rules over earlier ones.
+# Even Better TOML scopes these as punctuation.*.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L50-L150
+# VS Code editorBracketHighlight.foreground1 (#FFD700).
+# ref: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/core/editorColorRegistry.ts#L78-L83
+color #fd0 "[][]" "[{}]"
+
+# Recolor separators and assignment operators.
+# This stays in this section because nano applies later color rules over earlier ones.
+# Even Better TOML scopes these as punctuation.*.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L50-L150
+# VS Code Dark Modern editor.foreground (#CCCCCC).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "[.,]" "="
+
+# Invalid Table names
+# VS Code Dark VS invalid (#F44747).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L130-L134
+color #f44 "^[[:space:]]*\[\][[:space:]]*(#.*)?$"
+
+# Match obviously malformed dotted table headers.
+# VS Code Dark VS invalid (#F44747).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L130-L134
+color #f44 "^[[:space:]]*\[[^]]*(\.\.|\[\.|\.\])[^]]*\]"
+
+# Match single-quoted and double-quoted TOML strings.
+# Even Better TOML scopes these as string.quoted.*.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L155-L193
+# VS Code Dark VS string (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 ""(\\.|[^"])*"" "'[^']*'"
+
+# Match TOML multiline basic strings.
+# Even Better TOML scopes these as string.quoted.triple.*.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L155-L168
+# VS Code Dark VS string (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 start="\"\"\"" end="\"\"\""
+
+# Match TOML multiline literal strings.
+# Even Better TOML scopes these as string.quoted.triple.literal.block.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L185-L193
+# VS Code Dark VS string (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 start="'''" end="'''"
+
+# Match valid escape sequences inside basic strings.
+# Even Better TOML scopes these as constant.character.escape.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L159-L181
+# VS Code Dark+ constant.character.escape (#D7BA7D).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L186-L190
+color #dba "\\([btnfr\"\\/ ]|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})"
+
+# Match invalid escape sequences inside basic strings.
+# Even Better TOML scopes these as invalid.illegal.escape.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L159-L181
+# VS Code Dark VS invalid (#F44747).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L130-L134
+color #f44 "\\[^btnfr/\"\\]"
+
+# Re-apply quoted table keys after string rules so they are not treated as values.
+# This is intentionally limited to pyproject.toml-style entry-point table headers.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L50-L99
+# VS Code Dark VS support.type.property-name (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L313-L322
+color #9df "[.][[:space:]]*(\"[^\"]+\"|'[^']+')[[:space:]]*\]\]?"
+
+# Re-apply bracket color after the mixed table path override.
+# VS Code editorBracketHighlight.foreground1 (#FFD700).
+# ref: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/core/editorColorRegistry.ts#L78-L83
+color #fd0 "[][]" "[{}]"
+
+# Match TOML line comments.
+# Even Better TOML scopes these as comment.line.number-sign.toml.
+# ref: https://github.com/tamasfe/taplo/blob/master/editors/vscode/toml.tmLanguage.json#L26-L37
+# VS Code Dark VS comment (#6A9955).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L64-L68
+color #6a5 "#.*$"
 
 # Keyless value
-color ,red "^[[:space:]]*=.*"
+# Match entries with no key before the equals sign.
+# VS Code Dark VS invalid (#F44747).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L130-L134
+color #f44 "^[[:space:]]*=.*"
 
 # Trailing whitespace
-color ,green "[[:space:]]+$"
+# Match trailing whitespace as an invalid token.
+# VS Code Dark VS invalid (#F44747).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L130-L134
+color ,#f44 "[[:space:]]+$"
 
+# Original file: https://github.com/scopatz/nanorc/blob/master/toml.nanorc
 
 # MIT License
 

@@ -1,25 +1,86 @@
 syntax "yaml" "\.ya?ml$"
-#comment "#"
 header "^---" "%YAML"
-tabgives "  "
+comment "#"
 
-# Values
-color green "(:|^|\s)+\S+"
+# YAML scopes below follow the Red Hat YAML VS Code extension grammar.
+# ref: https://github.com/redhat-developer/vscode-yaml/blob/main/syntaxes/yaml.tmLanguage.json#L75-L177
+# ref: https://github.com/redhat-developer/vscode-yaml/blob/main/syntaxes/yaml.tmLanguage.json#L401-L590
 
-# Keys
-color red "(^|\s+).*+\s*:(\s|$)"
+# Dark Modern inherits token colors from Dark+.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L1-L5
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L1-L5
 
-# Special values
-color yellow "[:-]\s+(true|false|null)\s*$"
-color yellow "[:-]\s+[0-9]+\.?[0-9]*(\s*($|#))"
-color yellow "(^| )!!(binary|bool|float|int|map|null|omap|seq|set|str) "
+# Match YAML comments.
+# VS Code Dark VS comment (#6A9955).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L64-L68
+color #6a5 "(^|[[:space:]])#.*$"
 
-# Separator
-color brightwhite "^\s*-"
-color brightwhite ":(\s|$)"
+# Match YAML keys.
+# VS Code Dark+ support.type.property-name (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L313-L322
+color #9df "^[[:space:]]*(-[[:space:]]*)?[A-Za-z0-9_.-]+[[:space:]]*:"
 
-# Comments
-color brightblue "(^|[[:space:]])#.*$"
+# Match YAML keys inside flow mappings.
+# VS Code Dark+ support.type.property-name (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L313-L322
+color #9df "[{,][[:space:]]*[A-Za-z0-9_.-]+[[:space:]]*:"
 
-# Trailing whitespace
-color ,red "[[:space:]]+$"
+# Match plain scalar values as a conservative fallback.
+# VS Code Dark VS string (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 ":[[:space:]]+[A-Za-z_][A-Za-z0-9_.-]*"
+
+# Match YAML alias and anchor names.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+color #9df "[&*][A-Za-z0-9_-]+"
+
+# Recolor YAML alias and anchor markers.
+# VS Code Dark VS punctuation/keyword-like marker (#C586C0).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L156-L160
+color #c8c "[&*]"
+
+# Match YAML tag names.
+# VS Code Dark+ variable-like YAML tag text (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+color #9df "!![A-Za-z0-9_/.-]+"
+
+# Recolor YAML tag punctuation.
+# VS Code renders YAML tag punctuation close to editor foreground.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "!!"
+
+# Match YAML booleans and nulls.
+# VS Code Dark VS constant.language (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L70-L74
+icolor #59d "\<(true|false|null|yes|no|on|off)\>"
+
+# Match YAML numbers.
+# VS Code Dark VS constant.numeric (#B5CEA8).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L77-L85
+icolor #bca "\<[-+]?[0-9](_?[0-9])*([.][0-9](_?[0-9])*)?([eE][-+]?[0-9](_?[0-9])*)?\>"
+
+# Match grouping brackets with VS Code's first bracket-pair color.
+# VS Code editorBracketHighlight.foreground1 (#FFD700).
+# ref: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/core/editorColorRegistry.ts#L78-L83
+color #fd0 "[][]" "[{}]"
+
+# Match YAML document markers.
+# VS Code Dark Modern editor.foreground (#CCCCCC).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "^(---|\.\.\.)[[:space:]]*$"
+
+# Match YAML separators.
+# VS Code Dark Modern editor.foreground (#CCCCCC).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "[:,]" "^[[:space:]]*-"
+
+# Match YAML quoted strings.
+# VS Code Dark VS string (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 ""(\\.|[^"])*"" "'[^']*'"
+
+# Match trailing whitespace as an invalid token.
+# VS Code Dark VS invalid (#F44747).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L130-L134
+color ,#f44 "[[:space:]]+$"

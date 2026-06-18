@@ -5,18 +5,18 @@ comment "#"
 
 # Coloring the deb lines, working from tail to head.  First the
 # components -- well, everything, and thus also the components.
-color mint "^deb.*"
+color frost "^deb.*"
 # Distribution -- well, everything, except the components.
-color beet "^deb(-src)?\s+.*((ftp|https?|rsh|ssh|copy|file|spacewalk|tor):/\S+|cdrom:\[.+\]/)\s+\S+"
+color spring "^deb(-src)?\s+.*((ftp|https?|rsh|ssh|copy|file|spacewalk|tor):/\S+|cdrom:\[.+\]/)\s+\S+"
 # URIs.
-color sky "^deb(-src)?\s+.*(ftp|https?|rsh|ssh|copy|file|spacewalk|tor):/\S+"
+color grape "^deb(-src)?\s+.*(ftp|https?|rsh|ssh|copy|file|spacewalk|tor):/\S+"
 # CDroms.
-color sky "^deb(-src)?\s+.*cdrom:\[.+\]/"
+color coral "^deb(-src)?\s+.*cdrom:\[.+\]/"
 # Options.
-color brick "^deb(-src)?\s+\[.+\]\s+"
+color tomato "^deb(-src)?\s+\[.+\]\s+"
 # And finally the initial deb tag.
-color peach "^deb(-src)?"
+color banana "^deb(-src)?"
 
 # Comments.
-color slate "#.*"
+color scampi "#.*"
 

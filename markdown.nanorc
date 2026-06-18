@@ -1,51 +1,75 @@
-syntax "Markdown" "\.(md|mkd|mkdn|markdown|mdx|mdown)$"
+syntax "Markdown" "\.(md|mkd|mkdn|markdown)$"
+comment "<!--|-->"
 
-# Tables (Github extension)
-color cyan ".*[ :]\|[ :].*"
+# Markdown scopes below follow VS Code's bundled Markdown grammar.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/markdown-basics/syntaxes/markdown.tmLanguage.json#L60-L70
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/markdown-basics/syntaxes/markdown.tmLanguage.json#L2438-L3077
 
-# quotes
-color brightblack  start="^>" end="^$"
-color brightblack  "^>.*"
+# Dark Modern inherits token colors from Dark+.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L1-L5
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L1-L5
 
-# Emphasis
-color green "(^|[[:space:]])(_[^ ][^_]*_|\*[^ ][^*]*\*)"
+# Match inline code.
+# VS Code Dark VS markup.inline.raw (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L199-L203
+color #c97 "`[^`]*`"
 
-# Strong emphasis
-color brightgreen "(^|[[:space:]])(__[^ ][^_]*__|\*\*[^ ][^*]*\*\*)"
+# Match fenced-code delimiters without coloring the whole block.
+# VS Code Dark Modern editor.foreground (#CCCCCC).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "^```.*$"
 
-# strike-through
-color red "(^|[[:space:]])~~[^ ][^~]*~~"
+# Match block-quote markers.
+# VS Code Dark VS quote punctuation (#6A9955).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L187-L191
+color #6a5 "^>[[:space:]]?"
 
-# horizontal rules
-color brightmagenta "^(---+|===+|___+|\*\*\*+)\s*$"
+# Match ATX and Setext headings.
+# VS Code Dark VS markup.heading (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L149-L154
+color bold,#59d "^#{1,6}([[:space:]].*)?$" "^(=+|-+)[[:space:]]*$"
 
-# headlines
-color brightwhite "^#{1,6} .*"
+# Match emphasis.
+# VS Code Dark VS markup.italic (#C586C0).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L156-L160
+color #c8c "(^|[[:space:]])(_[^ ][^_]*_|\*[^ ][^*]*\*)"
 
-# lists
-color brightblue   "^[[:space:]]*[\*+-] |^[[:space:]]*[0-9]+\. "
+# Match strong emphasis after emphasis so paired delimiters keep the bold color.
+# VS Code Dark VS markup.bold (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L142-L147
+color bold,#59d "(^|[[:space:]])(__[^ ][^_]*__|\*\*[^ ][^*]*\*\*)"
 
-# leading whitespace
-color black    "^[[:space:]]+"
+# Match strike-through.
+# VS Code keeps deleted Markdown text close to the editor foreground.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L175-L179
+color #888 "(^|[[:space:]])~~[^ ][^~]*~~"
 
-# misc
-color magenta   "\(([CcRr]|[Tt][Mm])\)" "\.{3}" "(^|[[:space:]])\-\-($|[[:space:]])"
+# Match list markers.
+# VS Code Dark VS punctuation.definition.list.begin.markdown (#6796E6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L193-L197
+color #69e "^[[:space:]]*([*+-]|[0-9]+[.])[[:space:]]+"
 
-# links
-color brightblue "\[[^]]+\]"
-color brightblue "\[([^][]|\[[^]]*\])*\]\([^)]+\)"
+# Match links and images.
+# VS Code Dark VS Markdown link text (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 "\[[^]]+\]" "!\[[^]]+\]"
 
-# images
-color magenta "!\[[^][]*\](\([^)]+\)|\[[^]]+\])"
+# Match URLs.
+# VS Code renders Markdown link destinations close to editor foreground.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "https?://[^ )>]+"
 
-# urls
-color brightyellow "https?://[^ )>]+"
+# Match table rows and horizontal rules.
+# VS Code Dark Modern editor.foreground (#CCCCCC).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc ".*[ :]\|[ :].*" "^(---+|===+|___+|\*\*\*+)[[:space:]]*$"
 
-# code
-color yellow   "`[^`]*`|^ {4}[^-+*].*"
-# code blocks
-color yellow start="^```[^$]" end="^```$"
-color yellow "^```$"
+# Match HTML comments.
+# VS Code Dark VS comment (#6A9955).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L64-L68
+color #6a5 "<!--.*-->"
 
-## Trailing spaces
-color ,green "[[:space:]]+$"
+# Match trailing whitespace as an invalid token.
+# VS Code Dark VS invalid (#F44747).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L130-L134
+color ,#f44 "[[:space:]]+$"

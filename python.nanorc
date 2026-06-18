@@ -1,58 +1,220 @@
-## Python syntax highlighting rules for Nano
-
 syntax "python" "\.py$"
-header "^#!.*/(env +)?python[-0-9._]*( |$)"
+header "^#!.*/(env[[:blank:]]+(-S[[:blank:]]+)?)?python3([.][0-9]+)?([[:blank:]]|$)"
 magic "Python script"
 comment "#"
+tabgives "    "
 
-linter pyflakes
+# Ruff's concise output matches nano's filename:line:column linter parser.
+# ref: http://nano-editor.org/dist/latest/nanorc.5.html
+# ref: https://docs.astral.sh/ruff/settings/#output-format
+linter uvx ruff check --output-format=concise --quiet
 
-## built-in objects
-color cyan "\<(None|self|True|False)\>"
-## built-in attributes
-color cyan "\<(__builtin__|__dict__|__methods__|__members__|__class__|__bases__|__import__|__name__|__doc__|__self__|__debug__)\>"
-## built-in functions
-color cyan "\<(abs|append|apply|buffer|callable|chr|clear|close|closed|cmp|coerce|compile|complex|conjugate|copy|count|delattr|dir|divmod|eval|execfile|exec|extend|fileno|filter|float|flush|get|getattr|globals|has_key|hasattr|hash|hex|id|index|input|insert|int|intern|isatty|isinstance|issubclass|items|keys|len|list|locals|long|map|max|min|mode|name|oct|open|ord|pop|pow|print|range|raw_input|read|readline|readlines|reduce|reload|remove|repr|reverse|round|seek|setattr|slice|softspace|sort|str|tell|truncate|tuple|type|unichr|unicode|update|values|vars|write|writelines|xrange|zip|bool)\>"
-## built-in functions that were previously keywords
-color brightcyan "\<(print|exec)\>([[:space:]]|$)"
-## special method names
-color cyan "\<(__abs__|__add__|__and__|__call__|__cmp__|__coerce__|__complex__|__concat__|__contains__|__del__|__delattr__|__delitem__|__delslice__|__div__|__divmod__|__float__|__getattr__|__getitem__|__getslice__|__hash__|__hex__|__init__|__int__|__inv__|__invert__|__len__|__long__|__lshift__|__mod__|__mul__|__neg__|__nonzero__|__oct__|__or__|__pos__|__pow__|__radd__|__rand__|__rcmp__|__rdiv__|__rdivmod__|__repeat__|__repr__|__rlshift__|__rmod__|__rmul__|__ror__|__rpow__|__rrshift__|__rshift__|__rsub__|__rxor__|__setattr__|__setitem__|__setslice__|__str__|__sub__|__xor__|__bool__)\>"
-## exception classes
-color green "\<(Exception|StandardError|ArithmeticError|LookupError|EnvironmentError|AssertionError|AttributeError|EOFError|FloatingPointError|IOError|ImportError|IndexError|KeyError|KeyboardInterrupt|MemoryError|NameError|NotImplementedError|OSError|OverflowError|RuntimeError|SyntaxError|SystemError|SystemExit|TypeError|UnboundLocalError|UnicodeError|ValueError|WindowsError|ZeroDivisionError)\>"
-## types
-color green "\<(NoneType|TypeType|IntType|LongType|FloatType|ComplexType|StringType|UnicodeType|BufferType|TupleType|ListType|DictType|FunctionType|LambdaType|CodeType|ClassType|UnboundMethodType|InstanceType|MethodType|BuiltinFunctionType|BuiltinMethodType|ModuleType|FileType|XRangeType|TracebackType|FrameType|SliceType|EllipsisType)\>"
-## definitions
-color green "def [a-zA-Z_0-9]+"
-## keywords
-color brightred "\<(and|as|from|import|not|or)\>"
-color brightcyan "\<(assert|async|await|break|case|class|continue|def|del|elif|else|except|finally|for|global|if|in|is|lambda|map|match|pass|raise|return|try|with|while|yield)\>"
+# Ruff formats the temporary file that nano passes to the formatter.
+# ref: http://nano-editor.org/dist/latest/nanorc.5.html
+# ref: https://docs.astral.sh/ruff/formatter/#ruff-format
+formatter uvx ruff format --quiet
 
-## decorators
-color brightgreen "@[a-zA-Z_0-9]+"
+# Python scopes below follow VS Code's bundled MagicPython grammar.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L246-L283
 
-## operators
-color magenta "[.:;,+*|=!\%@]" "<" ">" "/" "-" "&"
+# Dark Modern inherits token colors from Dark+.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L1-L5
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L1-L5
 
-## parentheses
-color magenta "[(){}]" "\[" "\]"
+# Match remaining identifiers as a visible fallback when regex rules cannot infer semantics.
+# VS Code Dark+ customLiteral (#DCDCAA) is used here as the fallback color.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L199-L204
+color #dda "\<[[:alpha:]_][[:alnum:]_]*\>"
 
-## numbers
-icolor brightyellow "\b(([1-9][0-9]+)|0+)\.[0-9]+j?\b" "\b([1-9][0-9]*[Lj]?)\b" "\b0o?[0-7]*L?\b" "\b0x[1-9a-f][0-9a-f]*L?\b" "\b0b[01]+\b"
+# Match module paths after import and from.
+# VS Code semantic highlighting often colors resolved imported modules as types/namespaces.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L20-L57
+color #4cb "^[[:space:]]*from[[:space:]]+[[:alpha:]_][[:alnum:]_]*(\.[[:alpha:]_][[:alnum:]_]*)*" "^[[:space:]]*import[[:space:]]+[[:alpha:]_][[:alnum:]_]*(\.[[:alpha:]_][[:alnum:]_]*)*"
 
+# Match Python control-flow, import, and logical keywords.
+# VS Code MagicPython scopes these as keyword.control.* and keyword.operator.logical.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L246-L283
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L1752-L1764
+# VS Code Dark+ keyword.control (#C586C0).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L75-L87
+color #c8c "\<(and|as|assert|async|await|break|case|continue|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|match|nonlocal|not|or|pass|raise|return|try|while|with|yield)\>"
 
-## strings
-color yellow "['](\\.|[^'])*[']" "[']{3}(\\.|.)*[']{3}"
-color yellow "["](\\.|[^"])*["]" "["]{3}(\\.|.)*["]{3}"
+# Match Python declaration keywords.
+# VS Code MagicPython scopes these as storage.type.*.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L246-L283
+# VS Code Dark VS storage.type (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L246-L255
+color #59d "\<(class|def)\>"
 
-## comments
-color brightblue "^#.*|[[:space:]]#.*$"
+# Match Python constants.
+# VS Code MagicPython scopes these as constant.language.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L592-L600
+# VS Code Dark VS constant.language (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L70-L74
+color #59d "\<(True|False|None|NotImplemented|Ellipsis)\>"
 
-## block comments
-color yellow start=""""([^"),]|$)" end="(^|[^(\])""""
-color yellow start="'''([^'),]|$)" end="(^|[^(\])'''"
+# Match Python numeric literals.
+# VS Code MagicPython scopes these as constant.numeric.*.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L603-L687
+# VS Code Dark VS constant.numeric (#B5CEA8).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L77-L85
+icolor #bca "\<[-+]?[0-9](_?[0-9])*([.][0-9](_?[0-9])*)?([eE][-+]?[0-9](_?[0-9])*)?[jJ]?\>" "\<0[xX][0-9A-Fa-f](_?[0-9A-Fa-f])*[jJ]?\>" "\<0[oO][0-7](_?[0-7])*[jJ]?\>" "\<0[bB][01](_?[01])*[jJ]?\>"
 
-## trailing spaces
-color ,green "[[:space:]]+$"
+# Match Python 3.12+ built-in functions.
+# VS Code MagicPython scopes these as support.function.builtin.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L1708-L1731
+# VS Code Dark+ entity.name.function/support.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+color #dda "\<(__import__|abs|aiter|all|anext|any|ascii|bin|breakpoint|callable|chr|compile|delattr|dir|divmod|enumerate|eval|exec|filter|format|getattr|globals|hasattr|hash|help|hex|id|input|isinstance|issubclass|iter|len|locals|map|max|memoryview|min|next|oct|open|ord|pow|print|range|repr|reversed|round|setattr|sorted|sum|vars|zip)\>"
 
-## reminders
-color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
+# Match Python 3.12+ magic methods.
+# VS Code MagicPython scopes these as support.function.magic.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L1724-L1731
+# VS Code Dark+ entity.name.function/support.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+color #dda "\<__(abs|add|aenter|aexit|aiter|and|anext|await|bool|buffer|bytes|call|ceil|class_getitem|complex|contains|copy|deepcopy|del|delattr|delete|delitem|dir|divmod|enter|eq|exit|float|floor|floordiv|format|fspath|ge|get|getattr|getattribute|getitem|getnewargs|getnewargs_ex|getstate|gt|hash|iadd|iand|ifloordiv|ilshift|imatmul|imod|imul|index|init|init_subclass|int|invert|ior|ipow|irshift|isub|iter|itruediv|ixor|le|len|length_hint|lshift|lt|matmul|missing|mod|mul|ne|neg|new|or|pos|pow|radd|rand|rdivmod|reduce|reduce_ex|release_buffer|repr|reversed|rfloordiv|rlshift|rmatmul|rmod|rmul|ror|round|rpow|rrshift|rshift|rsub|rtruediv|rxor|set|set_name|setattr|setitem|sizeof|str|sub|subclasshook|truediv|trunc|xor)__\>"
+
+# Match Python 3.12+ magic variables.
+# VS Code MagicPython scopes these as support.variable.magic.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L1733-L1741
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+color #9df "\<__(all|annotations|bases|builtins|cached|class|debug|dict|doc|file|loader|match_args|module|mro|name|package|path|qualname|slots|spec|traceback|weakref)__\>"
+
+# Match function names before a call or definition argument list.
+# VS Code MagicPython scopes declarations as entity.name.function.python and calls as meta.function-call.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L1250-L1297
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L1552-L1624
+# VS Code Dark+ entity.name.function/support.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+icolor #dda "\<[[:alpha:]_][[:alnum:]_]*[[:space:]]*\("
+
+# Match lower_snake imported names that are commonly functions.
+# This approximates VS Code semantic highlighting for from-import lists.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+color #dda "^[[:space:]]*from[[:space:]]+.*\<import[[:space:]]+[a-z_][a-z0-9_]*\>" "^[[:space:]]+[a-z_][a-z0-9_]*[[:space:]]*,"
+
+# Re-apply module paths after imported-name approximation.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L20-L57
+color #4cb "^[[:space:]]*from[[:space:]]+[[:alpha:]_][[:alnum:]_]*(\.[[:alpha:]_][[:alnum:]_]*)*" "^[[:space:]]*import[[:space:]]+[[:alpha:]_][[:alnum:]_]*(\.[[:alpha:]_][[:alnum:]_]*)*"
+
+# Re-apply keywords after the function-call approximation.
+# The approximation can otherwise color "import (" in multiline imports as a function.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L75-L87
+color #c8c "\<(and|as|assert|async|await|break|case|continue|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|match|nonlocal|not|or|pass|raise|return|try|while|with|yield)\>"
+
+# Re-apply Python declaration keywords after the function-call approximation.
+# VS Code Dark VS storage.type (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L246-L255
+color #59d "\<(class|def)\>"
+
+# Match decorators.
+# VS Code MagicPython scopes these as entity.name.function.decorator.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L1490-L1535
+# VS Code Dark+ entity.name.function/support.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+color #dda "^[[:space:]]*@[[:alpha:]_][[:alnum:]_.]*"
+
+# Match built-in types, exception types, and class-like identifiers.
+# VS Code MagicPython scopes these as support.type.*.python and entity.name.type.class.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L987-L1030
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L1704-L1723
+# VS Code Dark+ support.type/entity.name.type (#4EC9B0).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L20-L57
+color #4cb "\<(BaseException|BaseExceptionGroup|Exception|ExceptionGroup|ArithmeticError|AssertionError|AttributeError|BlockingIOError|BrokenPipeError|BufferError|BytesWarning|ChildProcessError|ConnectionAbortedError|ConnectionError|ConnectionRefusedError|ConnectionResetError|DeprecationWarning|EOFError|EncodingWarning|EnvironmentError|FileExistsError|FileNotFoundError|FloatingPointError|FutureWarning|GeneratorExit|IOError|ImportError|ImportWarning|IndentationError|IndexError|InterruptedError|IsADirectoryError|KeyError|KeyboardInterrupt|LookupError|MemoryError|ModuleNotFoundError|NameError|NotADirectoryError|NotImplementedError|OSError|OverflowError|PendingDeprecationWarning|PermissionError|ProcessLookupError|RecursionError|ReferenceError|ResourceWarning|RuntimeError|RuntimeWarning|StopAsyncIteration|StopIteration|SyntaxError|SyntaxWarning|SystemError|SystemExit|TabError|TimeoutError|TypeError|UnboundLocalError|UnicodeDecodeError|UnicodeEncodeError|UnicodeError|UnicodeTranslateError|UnicodeWarning|UserWarning|ValueError|Warning|ZeroDivisionError|bool|bytearray|bytes|classmethod|complex|dict|float|frozenset|int|list|object|property|set|slice|staticmethod|str|super|tuple|type)\>"
+color #4cb "\<[A-Z][[:alnum:]_]*\>"
+
+# Match ALL_CAPS constants.
+# VS Code Dark+ variable.other.constant (#4FC1FF).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L103-L110
+color #4cf "\<[A-Z][A-Z0-9_]*\>"
+
+# Match special instance/class variables.
+# VS Code MagicPython scopes these as variable.language.special.*.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L1763-L1772
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+color #9df "\<(self|cls)\>"
+
+# Match ordinary assignment and annotation targets.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+color #9df "\<[a-z_][a-z0-9_]*[[:space:]]*(:|=)"
+
+# Match ordinary function parameters.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+color #9df "[(,][[:space:]]*[a-z_][a-z0-9_]*[[:space:]]*(:|=|,|\))"
+
+# Match the object variable before attribute or method access.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+color #9df "\<[a-z_][a-z0-9_]*\."
+
+# Re-apply module paths after object-member approximation.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L20-L57
+color #4cb "^[[:space:]]*from[[:space:]]+[[:alpha:]_][[:alnum:]_]*(\.[[:alpha:]_][[:alnum:]_]*)*" "^[[:space:]]*import[[:space:]]+[[:alpha:]_][[:alnum:]_]*(\.[[:alpha:]_][[:alnum:]_]*)*"
+
+# Re-apply keywords after the object-member approximation.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L75-L87
+color #c8c "\<(and|as|assert|async|await|break|case|continue|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|match|nonlocal|not|or|pass|raise|return|try|while|with|yield)\>"
+
+# Match attribute access after a dot.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+icolor #9df "\.[[:alpha:]_][[:alnum:]_]*"
+
+# Recolor separators and operators.
+# VS Code Dark VS keyword.operator uses editor foreground for symbolic operators.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L337-L340
+color #ccc "[.:;,+*|=!\%@]" "<" ">" "/" "-" "&"
+
+# Re-apply dotted module paths after punctuation so "collections.abc" stays one color.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L20-L57
+color #4cb "^[[:space:]]*from[[:space:]]+[[:alpha:]_][[:alnum:]_]*(\.[[:alpha:]_][[:alnum:]_]*)*" "^[[:space:]]*import[[:space:]]+[[:alpha:]_][[:alnum:]_]*(\.[[:alpha:]_][[:alnum:]_]*)*"
+
+# Re-apply keywords after dotted module paths.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L75-L87
+color #c8c "\<(and|as|assert|async|await|break|case|continue|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|match|nonlocal|not|or|pass|raise|return|try|while|with|yield)\>"
+
+# Match grouping brackets with VS Code's first bracket-pair color.
+# VS Code editorBracketHighlight.foreground1 (#FFD700).
+# ref: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/core/editorColorRegistry.ts#L78-L83
+color #fd0 "[(){}]" "[][]"
+
+# Match Python comments.
+# VS Code MagicPython scopes these as comment.line.number-sign.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L1993-L2028
+# VS Code Dark VS comment (#6A9955).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L64-L68
+color #6a5 "(^|[[:space:]])#.*$"
+
+# Match single-line Python strings.
+# VS Code MagicPython scopes these as string.quoted.*.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L3424-L3525
+# VS Code Dark VS string (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 "[rRuUbBfF]*['][^']*[^\\]?[']" "[rRuUbBfF]*["][^"]*[^\\]?["]"
+
+# Match multiline Python strings and docstrings.
+# VS Code MagicPython scopes these as string.quoted.docstring.*.python and string.quoted.multi.python.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L114-L205
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/python/syntaxes/MagicPython.tmLanguage.json#L3599-L3694
+# VS Code Dark VS string (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 start="[rRuUbBfF]*\"\"\"" end="\"\"\"" start="[rRuUbBfF]*'''" end="'''"
+
+# Match escape sequences inside strings.
+# VS Code Dark+ constant.character.escape (#D7BA7D).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L186-L190
+color #dba "\\([\\'\"abfnrtv]|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8}|N\{[^}]+\})"
+
+# Match trailing whitespace as an invalid token.
+# VS Code Dark VS invalid (#F44747).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L130-L134
+color ,#f44 "[[:space:]]+$"
+
+# Match reminder tags.
+# VS Code Dark Modern spotlight color is black on yellow.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color black,#fd0 "\<(FIXME|TODO|XXX)\>"

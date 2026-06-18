@@ -1,16 +1,30 @@
-## Here is an example for patch files.
-##
-syntax "Patch" "\.(patch|diff)$"
-header "^diff\>"
+## Syntax highlighting for patch and diff files.
+
+## Original author:  Mike Frysinger
+## License:  GPL version 3 or newer
+
+syntax patch "\.(patch|diff|debdiff|rej)$"
 magic "diff output"
-# You can't add comments in patch files.
+# There is no official support for comments in patch files.
 comment ""
 
-color mint "^\+.*"
-color teal "^\+\+\+.*"
-color lagoon "^ .*"
+# Added lines.
+color sky "^\+.*"
+# Show trailing whitespace only on added lines.
+color ,cyan "[[:space:]]+$"
+# Context lines.
+color plum "^ .*"
+# Deleted lines.
 color peach "^-.*"
-color red "^---.*"
-color brightyellow "^@@.*"
-color purple "^diff.*"
+
+# Header lines.
+color violet "^(Index:|diff)[[:blank:]].*"
+# File names and dates.
+color tomato "^---.*"
+color frost "^\+\+\+.*"
+# Line numbers.
+color volt "^@@.*"
+
+# Statistics.
+color brightblue start="^---$" end="^$"
 

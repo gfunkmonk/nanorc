@@ -1,28 +1,111 @@
-## Here is an example for Bourne shell scripts.
-##
-#syntax "SH" "\.sh$" "\.ash$" "\.bashrc$" "bashrc$" "\.bash_aliases$" "bash_aliases$" "\.bash_functions$" "bash_functions$" "\.bash_login$" "\.bash_logout$" "\.bash_profile$" "bash_profile$" "\.profile$" "revise\..+$"
-syntax "SH" "\.sh$" "\.ash$" "revise\..+$"
-header "^#!.*/(env +)?(ba|da|a)?sh( |$)"
+# Orignal file: https://github.com/scopatz/nanorc/blob/master/sh.nanorc
+
+# ShellCheck supports sh, bash, dash, ksh, and busybox.
+syntax sh "(\.sh|(^|/|\.)(ba|da|k)?sh(rc|_profile)?|(/etc/|(^|/)\.)profile)$"
+# Shebang
+header "^#!.*/((env[[:blank:]]+)?((ba|da|k)?sh|busybox([[:blank:]]+sh)?))\>"
+header "-\*-.*shell-script.*-\*-"
+# Final fallback if syntax and header checks fail.
 magic "(POSIX|Bourne-Again) shell script.*text"
 comment "#"
 
-linter dash -n
+tabgives "    "
+# ref: https://github.com/koalaman/shellcheck#in-your-editor
+linter shellcheck -f gcc
 
-## keywords:
-color green "\<(case|do|done|elif|else|esac|fi|for|function|if|in|select|then|time|until|while)\>"
-color green "(\{|\}|\(|\)|\;|\]|\[|`|\\|\$|<|>|!|=|&|\|)"
-color green "-[Ldefgruwx]\>"
-color green "-(eq|ne|gt|lt|ge|le|s|n|z)\>"
-## builtins:
-color brightblue "\<(alias|bg|bind|break|builtin|caller|cd|command|compgen|complete|compopt|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|false|fc|fg|getopts|hash|help|history|jobs|kill|let|local|logout|mapfile|popd|printf|pushd|pwd|read|readarray|readonly|return|set|shift|shopt|source|suspend|test|times|trap|true|type|typeset|ulimit|umask|unalias|unset|wait)\>"
+# Color settings
 
-## Highlighting unix commands that are not shell-builtin.
-## The following line is from https://github.com/serialhex/nano-highlight/blob/master/bash.nanorc
-color red "\<(aclocal|aconnect|aplay|apm|apmsleep|apropos|ar|arecord|as|as86|autoconf|autoheader|automake|awk|basename|bc|bison|c\+\+|cal|cat|cc|cdda2wav|cdparanoia|cdrdao|cd-read|cdrecord|chfn|chgrp|chmod|chown|chroot|chsh|clear|cmp|co|col|comm|cp|cpio|cpp|cut|dc|dd|df|diff|diff3|dir|dircolors|directomatic|dirname|du|env|expr|fbset|file|find|flex|flex\+\+|fmt|free|ftp|funzip|fuser|g\+\+|gawk|gc|gcc|gdb|getent|getopt|gettext|gettextize|gimp|gimp-remote|gimptool|gmake|gs|head|hexdump|id|install|join|kill|killall|ld|ld86|ldd|less|lex|ln|locate|lockfile|logname|lp|lpr|ls|lynx|m4|make|man|mkdir|mknod|msgfmt|mv|namei|nasm|nawk|nc|nice|nl|nm|nm86|nmap|nohup|nop|od|passwd|patch|pcregrep|pcretest|perl|perror|pidof|pr|printf|procmail|prune|ps2ascii|ps2epsi|ps2frag|ps2pdf|ps2ps|psbook|psmerge|psnup|psresize|psselect|pstops|rcs|rev|rm|scp|sed|seq|setterm|shred|size|size86|skill|slogin|snice|sort|sox|split|ssh|ssh-add|ssh-agent|ssh-keygen|ssh-keyscan|stat|strings|strip|sudo|suidperl|sum|tac|tail|tee|test|tr|uniq|unlink|unzip|updatedb|updmap|uptime|users|vmstat|w|wc|wget|whatis|whereis|which|who|whoami|write|xargs|yacc|yes|zip|zsoelim)\>"
+# Dark Modern inherits token colors from Dark+.
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L1-L5
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L1-L5
 
-## other editor highlights
-icolor brightgreen "^\s+[0-9A-Z_]+\s+\(\)"
-icolor brightred "\$\{?[0-9A-Z_!@#%$*?-]+\}?"
-color brightyellow ""(\\.|[^"])*"" "'(\\.|[^'])*'"
-color cyan "(^|[[:space:]])#.*$"
-color ,green "[[:space:]]+$"
+# Match shell control-flow words that VS Code scopes as keyword.control.
+# VS Code Dark+ keyword.control (#C586C0).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L75-L87
+color #c8c "\<(break|case|continue|do|done|elif|else|esac|fi|for|if|in|return|select|then|time|until|while)\>"
+
+# Match shell punctuation and operators that should stay at editor foreground color.
+# VS Code Dark Modern editor.foreground (#CCCCCC).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "(\;|\]|\[|`|\\|<|>|!|=|&|\|)"
+
+# Match short shell options used as command arguments.
+# VS Code Dark+ constant.other.option (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L177-L184
+color #59d "-[a-zA-Z]+\>"
+
+# Match test/logical expression operators such as -eq, -n, and -f.
+# VS Code Dark+ constant.other.option (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L177-L184
+color #59d "-(nt|ot|ef|eq|ne|lt|le|gt|ge|[a-hknoprstuwxzOGLSN])\>"
+
+# Match shell declaration and modifier words that VS Code scopes as storage.
+# VS Code Dark VS storage/storage.modifier (#569CD6).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L245-L264
+color #59d "\<(declare|export|function|local|readonly|typeset)\>"
+
+## Command names.
+# Match shell builtin command names that VS Code scopes as support.function.
+# VS Code Dark+ support.function/entity.name.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+color #dda "\<(alias|bg|bind|builtin|caller|cd|command|compgen|complete|compopt|dirs|disown|echo|enable|eval|exec|exit|false|fc|fg|getopts|hash|help|history|jobs|kill|let|logout|mapfile|popd|printf|pushd|pwd|read|readarray|set|shift|shopt|source|suspend|test|times|trap|true|type|ulimit|umask|unalias|unset|wait)\>"
+
+# Match common external command names as function calls.
+# VS Code Dark+ entity.name.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+color #dda "\<(awk|cat|chgrp|chmod|chown|cp|cut|env|grep|head|install|ln|make|mkdir|mv|rm|rmdir|sed|sort|tail|tar|touch)\>"
+
+# Match function declarations written as name().
+# VS Code Dark+ entity.name.function (#DCDCAA).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L7-L17
+icolor #dda "\<[[:alpha:]_][[:alnum:]_]*[[:space:]]*\(\)"
+
+# Match grouping brackets and braces with VS Code's first bracket-pair color.
+# VS Code editorBracketHighlight.foreground1 (#FFD700).
+# ref: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/core/editorColorRegistry.ts#L78-L83
+color #fd0 "[{}()]"
+
+# Match single-quoted and double-quoted shell strings.
+# VS Code Dark VS string (#CE9178).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L267-L273
+color #c97 ""(\\.|[^"])*"" "'(\\.|[^'])*'"
+
+# Match decimal numeric literals.
+# VS Code Dark VS constant.numeric (#B5CEA8).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L77-L85
+color #bca "\<[0-9]+\>"
+
+# Match special one-character shell variables such as $?, $$, and $@.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+icolor #9df "\$[-@*#?$!0_]"
+
+# Match simple shell variable references such as $name.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+icolor #9df "\$[[:alpha:]_][[:alnum:]_]*"
+
+# Match braced shell parameter expansions such as ${name} and ${1}.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+icolor #9df "\$\{[#!]?[-@*#?$![:alnum:]_]+\}?"
+
+# Match the variable name part of shell assignments such as name=value.
+# VS Code Dark+ variable (#9CDCFE).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_plus.json#L90-L100
+icolor #9df "\<[[:alpha:]_][[:alnum:]_]*="
+
+# Recolor assignment operators after assignment-variable matching.
+# VS Code Dark Modern editor.foreground (#CCCCCC).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_modern.json#L33-L35
+color #ccc "="
+
+# Comment and shebang
+# VS Code Dark VS comment (#6A9955).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L64-L68
+color #6a5 "(^|[[:space:]])#.*$"
+
+# Trailing whitespace
+# VS Code Dark VS invalid (#F44747).
+# ref: https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/dark_vs.json#L130-L134
+color ,#f44 "[[:space:]]+$"

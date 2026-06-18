@@ -4,8 +4,23 @@
 ##
 syntax "dotenv" "\.env$" "^\.env\..+$"
 
-color green "(\(|\)|\$|=)"
-color brightyellow ""(\\.|[^"])*"" "'(\\.|[^'])*'"
-color cyan "(^|[[:space:]])#.*$"
-color brightwhite,yellow "\<(FIXME|TODO|XXX)\>"
+# Keys
+color brightred "^[^=]+"
+
+# Values
+color brightcyan "[^=]+$"
+
+# Erroneous Spaces
+color ,red "[[:space:]]"
+
+# Operators
+color brightblack "(\(|\)|\$|=)"
+
+# Strings
+color brightgreen ""(\\.|[^"])*"" "'(\\.|[^'])*'"
+
+# Comments
+color brightblue "(^|[[:space:]])#.*$"
+
+# Whitespace
 color ,green "[[:space:]]+$"
